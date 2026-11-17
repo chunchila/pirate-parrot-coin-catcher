@@ -1,6 +1,6 @@
 <!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"><title>התוכי הפיראט - תופס מטבעות</title><style>*{margin:0;box-sizing:border-box}body{background:#06202e;color:#fff;font-family:"Comic Sans MS","Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;touch-action:none;user-select:none;min-height:100vh}h1{margin:10px;font-size:22px;color:#ffd447;text-shadow:2px 2px #b8500b}canvas{width:min(96vw,400px);aspect-ratio:5/7;border-radius:20px;border:5px solid #8b5a2b}p{opacity:.75;font-size:14px;margin:6px}</style></head><body><h1>התוכי הפיראט</h1><canvas id="c" width="400" height="560"></canvas><p>גררו את הספינה ימינה ושמאלה · תפסו מטבעות והתחמקו מפצצות</p>
 <script>
-const c=document.getElementById('c'),x=c.getContext('2d');let best=+localStorage.parrotBest||0,px,it,sc,lives,t,over;
+const c=document.getElementById('c'),x=c.getContext('2d');x.direction='ltr';let best=+localStorage.parrotBest||0,px,it,sc,lives,t,over;
 function init(){px=200;it=[];sc=0;lives=3;t=0;over=false}
 function mv(e){const r=c.getBoundingClientRect();px=Math.max(40,Math.min(360,(e.clientX-r.left)*400/r.width))}
 c.addEventListener('pointermove',mv);c.addEventListener('pointerdown',e=>{if(over)init();else mv(e)});
