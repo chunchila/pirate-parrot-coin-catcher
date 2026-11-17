@@ -1,0 +1,19 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"><title>התוכי הפיראט - תופס מטבעות</title><style>*{margin:0;box-sizing:border-box}body{background:#06202e;color:#fff;font-family:"Comic Sans MS","Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;touch-action:none;user-select:none;min-height:100vh}h1{margin:10px;font-size:22px;color:#ffd447;text-shadow:2px 2px #b8500b}canvas{width:min(96vw,400px);aspect-ratio:5/7;border-radius:20px;border:5px solid #8b5a2b}p{opacity:.75;font-size:14px;margin:6px}</style></head><body><h1>🦜 התוכי הפיראט</h1><canvas id="c" width="400" height="560"></canvas><p>גררו את הספינה ימינה ושמאלה · תפסו 🪙 והתחמקו מ־💣</p>
+<script>
+const c=document.getElementById('c'),x=c.getContext('2d');let best=+localStorage.parrotBest||0,px,it,sc,lives,t,over;
+function init(){px=200;it=[];sc=0;lives=3;t=0;over=false}
+function mv(e){const r=c.getBoundingClientRect();px=Math.max(40,Math.min(360,(e.clientX-r.left)*400/r.width))}
+c.addEventListener('pointermove',mv);c.addEventListener('pointerdown',e=>{if(over)init();else mv(e)});
+addEventListener('keydown',e=>{if(e.key=='ArrowLeft')px=Math.max(40,px-25);if(e.key=='ArrowRight')px=Math.min(360,px+25)});
+function loop(){t++;const g=x.createLinearGradient(0,0,0,560);g.addColorStop(0,'#7fd6ff');g.addColorStop(.6,'#c8f1ff');g.addColorStop(.6,'#1a9bd7');g.addColorStop(1,'#0a4f7a');x.fillStyle=g;x.fillRect(0,0,400,560);
+x.fillStyle='#fff';x.font='40px serif';x.fillText('☁️',60+(t*.2)%400,70);x.fillText('☁️',300-(t*.15)%400,130);
+x.strokeStyle='#ffffff88';x.lineWidth=3;for(let r=0;r<3;r++){x.beginPath();for(let i=0;i<=400;i+=10)x.lineTo(i,340+r*60+Math.sin(i/30+t/20+r)*6);x.stroke()}
+if(!over){if(t%Math.max(18,45-(sc/60|0))==0)it.push({x:30+Math.random()*340,y:-20,b:Math.random()<.25+Math.min(.2,sc/1500),v:3+Math.random()*2+sc/300});
+ it.forEach(o=>{o.y+=o.v;if(o.y>470&&o.y<520&&Math.abs(o.x-px)<42){o.d=1;if(o.b){lives--;if(lives<=0){over=true;if(sc>best){best=sc;localStorage.parrotBest=best}}}else sc+=10}else if(o.y>580){o.d=1;if(!o.b){sc=Math.max(0,sc-2)}}});it=it.filter(o=>!o.d)}
+it.forEach(o=>{x.font='32px serif';x.fillText(o.b?'💣':'🪙',o.x-16,o.y)});
+x.font='56px serif';x.fillText('⛵',px-28,520);x.font='34px serif';x.fillText('🦜',px-16,478);
+x.fillStyle='#06202e';x.font='bold 20px sans-serif';x.fillText('💰 '+sc+'   ❤️ '+lives+'   שיא '+best,12,30);
+if(over){x.fillStyle='#000b';x.fillRect(40,200,320,130);x.fillStyle='#ffd447';x.textAlign='center';x.font='bold 30px sans-serif';x.fillText('הספינה טבעה!',200,250);x.fillStyle='#fff';x.font='18px sans-serif';x.fillText('ניקוד '+sc+' · לחצו להפלגה חדשה',200,290);x.textAlign='left'}
+requestAnimationFrame(loop)}
+init();loop();
+</script></body></html>
