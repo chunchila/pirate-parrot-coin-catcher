@@ -1,18 +1,27 @@
-<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"><title>התוכי הפיראט - תופס מטבעות</title><style>*{margin:0;box-sizing:border-box}body{background:#06202e;color:#fff;font-family:"Comic Sans MS","Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;touch-action:none;user-select:none;min-height:100vh}h1{margin:10px;font-size:22px;color:#ffd447;text-shadow:2px 2px #b8500b}canvas{width:min(96vw,400px);aspect-ratio:5/7;border-radius:20px;border:5px solid #8b5a2b}p{opacity:.75;font-size:14px;margin:6px}</style></head><body><h1>🦜 התוכי הפיראט</h1><canvas id="c" width="400" height="560"></canvas><p>גררו את הספינה ימינה ושמאלה · תפסו 🪙 והתחמקו מ־💣</p>
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"><title>התוכי הפיראט - תופס מטבעות</title><style>*{margin:0;box-sizing:border-box}body{background:#06202e;color:#fff;font-family:"Comic Sans MS","Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;touch-action:none;user-select:none;min-height:100vh}h1{margin:10px;font-size:22px;color:#ffd447;text-shadow:2px 2px #b8500b}canvas{width:min(96vw,400px);aspect-ratio:5/7;border-radius:20px;border:5px solid #8b5a2b}p{opacity:.75;font-size:14px;margin:6px}</style></head><body><h1>התוכי הפיראט</h1><canvas id="c" width="400" height="560"></canvas><p>גררו את הספינה ימינה ושמאלה · תפסו מטבעות והתחמקו מפצצות</p>
 <script>
 const c=document.getElementById('c'),x=c.getContext('2d');let best=+localStorage.parrotBest||0,px,it,sc,lives,t,over;
 function init(){px=200;it=[];sc=0;lives=3;t=0;over=false}
 function mv(e){const r=c.getBoundingClientRect();px=Math.max(40,Math.min(360,(e.clientX-r.left)*400/r.width))}
 c.addEventListener('pointermove',mv);c.addEventListener('pointerdown',e=>{if(over)init();else mv(e)});
 addEventListener('keydown',e=>{if(e.key=='ArrowLeft')px=Math.max(40,px-25);if(e.key=='ArrowRight')px=Math.min(360,px+25)});
+function coin(cx,cy){x.fillStyle='#b8860b';x.beginPath();x.arc(cx,cy,14,0,7);x.fill();x.fillStyle='#ffd447';x.beginPath();x.arc(cx,cy,11,0,7);x.fill();x.strokeStyle='#e0a800';x.lineWidth=2;x.beginPath();x.arc(cx,cy,7,0,7);x.stroke();x.fillStyle='#fff8';x.fillRect(cx-6,cy-8,3,6)}
+function bomb(cx,cy){x.fillStyle='#111';x.beginPath();x.arc(cx,cy,14,0,7);x.fill();x.fillStyle='#fff5';x.beginPath();x.arc(cx-5,cy-5,4,0,7);x.fill();x.strokeStyle='#8b5a2b';x.lineWidth=3;x.beginPath();x.moveTo(cx+6,cy-11);x.quadraticCurveTo(cx+14,cy-20,cx+8,cy-24);x.stroke();x.fillStyle='#ff6a00';x.beginPath();x.arc(cx+8,cy-25,4,0,7);x.fill();x.fillStyle='#ffe14d';x.beginPath();x.arc(cx+8,cy-25,2,0,7);x.fill()}
+function ship(cx){x.fillStyle='#8b5a2b';x.beginPath();x.moveTo(cx-40,500);x.lineTo(cx+40,500);x.lineTo(cx+28,528);x.lineTo(cx-28,528);x.fill();x.fillStyle='#5a3a1a';x.fillRect(cx-40,500,80,5);x.fillStyle='#ffd447';[-18,0,18].forEach(d=>{x.beginPath();x.arc(cx+d,515,3.5,0,7);x.fill()});
+x.fillStyle='#5a3a1a';x.fillRect(cx+14,452,4,48);x.fillStyle='#fff';x.beginPath();x.moveTo(cx+18,456);x.lineTo(cx+44,490);x.lineTo(cx+18,490);x.fill();x.fillStyle='#d6204a';x.fillRect(cx+18,452,14,8)}
+function parrot(cx,cy){x.fillStyle='#1e5fd6';x.beginPath();x.moveTo(cx-6,cy+10);x.lineTo(cx-20,cy+30);x.lineTo(cx-12,cy+32);x.lineTo(cx-2,cy+14);x.fill();
+x.fillStyle='#29b34a';x.beginPath();x.ellipse(cx,cy,13,18,0,0,7);x.fill();x.fillStyle='#ffd447';x.beginPath();x.ellipse(cx+3,cy+4,7,11,0,0,7);x.fill();x.fillStyle='#1f8f3a';x.beginPath();x.ellipse(cx-6,cy,6,12,.2,0,7);x.fill();
+x.fillStyle='#e8352e';x.beginPath();x.arc(cx+2,cy-19,10,0,7);x.fill();x.beginPath();x.moveTo(cx-4,cy-26);x.lineTo(cx-10,cy-34);x.lineTo(cx+2,cy-28);x.fill();
+x.fillStyle='#fff';x.beginPath();x.arc(cx+5,cy-21,4,0,7);x.fill();x.fillStyle='#111';x.beginPath();x.arc(cx+6,cy-21,2,0,7);x.fill();
+x.fillStyle='#ffb000';x.beginPath();x.moveTo(cx+10,cy-23);x.lineTo(cx+22,cy-17);x.lineTo(cx+10,cy-13);x.fill();x.fillStyle='#222';x.fillRect(cx-9,cy-28,18,4);x.beginPath();x.moveTo(cx-9,cy-28);x.lineTo(cx,cy-38);x.lineTo(cx+9,cy-28);x.fill()}
 function loop(){t++;const g=x.createLinearGradient(0,0,0,560);g.addColorStop(0,'#7fd6ff');g.addColorStop(.6,'#c8f1ff');g.addColorStop(.6,'#1a9bd7');g.addColorStop(1,'#0a4f7a');x.fillStyle=g;x.fillRect(0,0,400,560);
-x.fillStyle='#fff';x.font='40px serif';x.fillText('☁️',60+(t*.2)%400,70);x.fillText('☁️',300-(t*.15)%400,130);
+[[60+(t*.2)%400,70],[300-(t*.15)%400,130]].forEach(([a,b])=>{x.fillStyle='#fff';x.beginPath();x.arc(a,b,16,0,7);x.arc(a+18,b-6,20,0,7);x.arc(a+38,b,15,0,7);x.fill()});
 x.strokeStyle='#ffffff88';x.lineWidth=3;for(let r=0;r<3;r++){x.beginPath();for(let i=0;i<=400;i+=10)x.lineTo(i,340+r*60+Math.sin(i/30+t/20+r)*6);x.stroke()}
 if(!over){if(t%Math.max(18,45-(sc/60|0))==0)it.push({x:30+Math.random()*340,y:-20,b:Math.random()<.25+Math.min(.2,sc/1500),v:3+Math.random()*2+sc/300});
  it.forEach(o=>{o.y+=o.v;if(o.y>470&&o.y<520&&Math.abs(o.x-px)<42){o.d=1;if(o.b){lives--;if(lives<=0){over=true;if(sc>best){best=sc;localStorage.parrotBest=best}}}else sc+=10}else if(o.y>580){o.d=1;if(!o.b){sc=Math.max(0,sc-2)}}});it=it.filter(o=>!o.d)}
-it.forEach(o=>{x.font='32px serif';x.fillText(o.b?'💣':'🪙',o.x-16,o.y)});
-x.font='56px serif';x.fillText('⛵',px-28,520);x.font='34px serif';x.fillText('🦜',px-16,478);
-x.fillStyle='#06202e';x.font='bold 20px sans-serif';x.fillText('💰 '+sc+'   ❤️ '+lives+'   שיא '+best,12,30);
+it.forEach(o=>o.b?bomb(o.x,o.y):coin(o.x,o.y));
+ship(px);parrot(px-6,474);
+x.fillStyle='#06202e';x.font='bold 20px sans-serif';x.fillText('מטבעות '+sc+'   חיים '+lives+'   שיא '+best,12,30);
 if(over){x.fillStyle='#000b';x.fillRect(40,200,320,130);x.fillStyle='#ffd447';x.textAlign='center';x.font='bold 30px sans-serif';x.fillText('הספינה טבעה!',200,250);x.fillStyle='#fff';x.font='18px sans-serif';x.fillText('ניקוד '+sc+' · לחצו להפלגה חדשה',200,290);x.textAlign='left'}
 requestAnimationFrame(loop)}
 init();loop();
